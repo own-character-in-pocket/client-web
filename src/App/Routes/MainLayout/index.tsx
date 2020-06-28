@@ -12,6 +12,8 @@ const Layout = styled.main`
   margin-left: ${Size.SIDEBAR_WIDTH_PX};
 `;
 
+export const MainLayoutRouteList = [MAIN, CARD_LIST, CARD_INFORMATION];
+
 export const MainLayout = () => (
   <>
     <Sidebar />
