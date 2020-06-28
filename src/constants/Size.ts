@@ -1,6 +1,7 @@
 import { createVariablesInStyleSheets } from "utils/create-variables-in-style-sheets";
 
-export const pixelize = (size: number) => `${size}px`;
+const cache = {} as Record<string, string>;
+export const pixelize = (size: number) => cache[size] ?? (cache[size] = `${size}px`);
 
 export const UNIT = 16;
 export const UNIT_PX = pixelize(UNIT);
