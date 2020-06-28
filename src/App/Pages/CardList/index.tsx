@@ -1,5 +1,4 @@
 import { Loading } from "App/Atomics/Loading";
-import { BaseLayout } from "App/Layouts/BaseLayout";
 import { ThumbnailCard } from "App/Molecules/ThumbnailCard";
 import { cardInformationPath } from "constants/Routes";
 import React from "react";
@@ -8,7 +7,7 @@ import { lazyComponent } from "utils/lazy-component";
 import { loadCardList } from "./services/loadCardList";
 import { CardListStoreProvider, useCardListSelector } from "./Store";
 
-const Layout = styled(BaseLayout)`
+const Layout = styled.div`
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fill, 8rem);

@@ -1,9 +1,8 @@
-import { BaseLayout } from "App/Layouts/BaseLayout";
 import { Size } from "constants/Size";
 import React from "react";
 import styled from "styled-components";
 
-const Layout = styled(BaseLayout)`
+const Layout = styled.div`
   padding: ${Size.PADDING_PX};
 `;
 
