@@ -1,0 +1,7 @@
+:root {
+  color: var(--font-basic);
+}
+
+:root:lang(ko) {
+  font-family: Noto Sans KR, Noto Sans, Helvetica Neue, Helvetica, Arial, sans-serif;
+}

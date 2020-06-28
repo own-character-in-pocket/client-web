@@ -1,0 +1,6 @@
+{
+  "service-name": "포켓자캐",
+  "route-main": "메인",
+  "route-card-list": "카드 리스트",
+  "route-card-information": "카드 정보"
+}
