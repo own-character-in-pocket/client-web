@@ -1,39 +1,39 @@
 import { DependencyList, useEffect } from "react";
 
 export type IsMounted = () => boolean;
-export type OnCancel = () => void;
+export type OnCancel = () => void | Promise<void>;
 export type CancelHandler = (onCancel: OnCancel) => void;
-export type OnCleanup = () => void;
-export type EffectCallback = (isMounted: IsMounted, onCancel: CancelHandler) => Promise<void>;
+export type Effect = (isMounted: IsMounted, onCancel: CancelHandler) => Promise<void>;
+export type Cleanup = () => void | Promise<void>;
 
 const noop = (): void => {};
 
-export function useAsyncEffect(effect: EffectCallback, dependencies: DependencyList): void;
-export function useAsyncEffect(effect: EffectCallback, onCleanup: OnCleanup, dependencies: DependencyList): void;
-export function useAsyncEffect(
-  effect: EffectCallback,
-  onCleanup: OnCleanup | DependencyList,
-  dependencies = onCleanup as DependencyList
-): void {
-  const runGenerator = () => {
+export function useAsyncEffect(effect: Effect, dependencies: DependencyList): void;
+export function useAsyncEffect(effect: Effect, cleanup: Cleanup, dependencies: DependencyList): void;
+export function useAsyncEffect(effect: Effect, cleanup: Cleanup | DependencyList, dependencies = cleanup as DependencyList): void {
+  const run = () => {
     let isMounted = true;
     let onCancel: OnCancel = noop;
 
     const checkToBeMounted: IsMounted = () => isMounted;
     const cancelHandler: CancelHandler = nextCancelHandler => {
-      onCancel = nextCancelHandler;
+      onCancel = () => {
+        onCancel = noop;
+        return nextCancelHandler();
+      };
     };
-    effect(checkToBeMounted, cancelHandler);
+    effect(checkToBeMounted, cancelHandler).catch(() => onCancel());
 
-    const cleanup: OnCleanup = () => {
+    const cleanup = () => {
       isMounted = false;
-      onCancel();
-      if (typeof onCleanup === "function") {
-        onCleanup();
-      }
+      Promise.resolve(onCancel()).finally(() => {
+        if (typeof cleanup === "function") {
+          cleanup();
+        }
+      });
     };
 
     return cleanup;
   };
-  useEffect(runGenerator, dependencies);
+  useEffect(run, dependencies);
 }
