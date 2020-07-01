@@ -1,5 +1,6 @@
 import { AppStore, useAppSelector } from "App/Store";
 import React, { FC } from "react";
+import { Route } from "react-router";
 
 type Props = {
   path: string;
@@ -9,7 +10,7 @@ type Props = {
   isAuthorized: (store: AppStore) => boolean;
 };
 
-export const RestrictedRoute = ({ component: Component, fallback: Fallback, isAuthorized }: Props) => {
+export const RestrictedRoute = ({ path, component: Component, fallback: Fallback, isAuthorized }: Props) => {
   const store = useAppSelector(store => store);
-  return isAuthorized(store) ? <Component /> : <Fallback />;
+  return isAuthorized(store) ? <Route path={path} component={Component} /> : <Fallback />;
 };
