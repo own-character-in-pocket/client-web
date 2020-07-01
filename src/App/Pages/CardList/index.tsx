@@ -21,7 +21,7 @@ const Loaded = () => {
   return (
     <Layout>
       {itemList.map(({ id, thumbnail, displayName }) => (
-        <ThumbnailCard key={id} to={cardInformationPath({ id })} source={thumbnail} title={displayName} />
+        <ThumbnailCard key={id} to={cardInformationPath.transform({ id })} source={thumbnail} title={displayName} />
       ))}
     </Layout>
   );

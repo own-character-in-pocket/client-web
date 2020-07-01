@@ -1,8 +1,19 @@
-import { compile } from "path-to-regexp";
+import { compile, MatchResult, match } from "path-to-regexp";
 
-const createCompiler = <T extends Record<string, null | boolean | number | string>>(path: string) => {
+const createCompiler = <P extends Record<string, null | boolean | number | string>>(path: string) => {
   const compiler = compile(path);
-  return (item: T) => compiler(item);
+  const matcher = match<P>(path);
+  return {
+    transform(item: P): string {
+      return compiler(item);
+    },
+    parse(path: string): MatchResult<P> {
+      return matcher(path) as MatchResult<P>;
+    },
+    isMatch(path: string): boolean {
+      return !!matcher(path);
+    }
+  };
 };
 
 export const MAIN = "/";
