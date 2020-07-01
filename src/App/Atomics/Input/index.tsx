@@ -12,6 +12,10 @@ const EmailLayout = styled(Layout)``;
 
 const PasswordLayout = styled(Layout)``;
 
+const ColorLayout = styled(Layout)``;
+
+const ImageLayout = styled(Layout)``;
+
 type BaseProps = {
   className?: string;
   style?: CSSProperties;
@@ -28,6 +32,8 @@ type InputKind = {
   number: "number";
   email: "email";
   password: "password";
+  color: "color";
+  image: "image";
 };
 
 type TextProps = {
@@ -54,7 +60,19 @@ type PasswordProps = {
   onChange?: (value: string) => void;
 };
 
-type InputTypeProps = TextProps | NumberProps | EmailProps | PasswordProps;
+type ColorProps = {
+  type: InputKind["color"];
+  value?: string;
+  onChange?: (value: string) => void;
+};
+
+type ImageProps = {
+  type: InputKind["image"];
+  value?: string;
+  onChange?: (value: string) => void;
+};
+
+type InputTypeProps = TextProps | NumberProps | EmailProps | PasswordProps | ColorProps | ImageProps;
 
 type Props = BaseProps & InputTypeProps;
 
@@ -145,6 +163,50 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
           id={id}
           type={props.type}
           autoComplete={autoComplete}
+          required={isRequired}
+          tabIndex={tabIndex}
+          value={value}
+          onChange={change}
+          onClick={onClick}
+          onBlur={onBlur}
+        />
+      );
+    }
+    case "color": {
+      const { value, onChange = NO_OPERATION } = props;
+      const change = (event: ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        onChange(value);
+      };
+      return (
+        <ColorLayout
+          ref={ref}
+          className={className}
+          style={style}
+          id={id}
+          type={props.type}
+          required={isRequired}
+          tabIndex={tabIndex}
+          value={value}
+          onChange={change}
+          onClick={onClick}
+          onBlur={onBlur}
+        />
+      );
+    }
+    case "image": {
+      const { value, onChange = NO_OPERATION } = props;
+      const change = (event: ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        onChange(value);
+      };
+      return (
+        <ImageLayout
+          ref={ref}
+          className={className}
+          style={style}
+          id={id}
+          type="file"
           required={isRequired}
           tabIndex={tabIndex}
           value={value}
