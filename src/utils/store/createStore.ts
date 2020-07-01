@@ -15,8 +15,7 @@ export const createStore = <S, A extends Action | ActionList>(reducer: Reducer<S
 
   type Selector<SS> = (store: S) => SS;
 
-  type useStore = <SS>(selector: Selector<SS>, dependencies?: DependencyList) => readonly [SS, Dispatch<A>];
-  const useStore: useStore = (selector, dependencies) => {
+  const useStore = <SS>(selector: Selector<SS>, dependencies?: DependencyList): readonly [SS, Dispatch<A>] => {
     const [store, dispatch] = useContext(Context);
     const createMemo = () => [selector(store), dispatch] as const;
 
