@@ -1,12 +1,15 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import { Routes } from "./Routes";
-import { AppStoreProvider } from "./Store";
+import { AppStore, AppStoreProvider } from "./Store";
 import { createInitialState, InitialLocaleStateProps } from "./Store/Locale";
 import "./styles";
 
-const createInitialStore = ({ currentLanguage, fallbackLanguage, supportLanguageList, locales }: Props) => ({
-  Locale: createInitialState({ currentLanguage, fallbackLanguage, supportLanguageList, locales })
+const createInitialStore = ({ currentLanguage, fallbackLanguage, supportLanguageList, locales }: Props): AppStore => ({
+  Locale: createInitialState({ currentLanguage, fallbackLanguage, supportLanguageList, locales }),
+  User: {
+    avatar: null
+  }
 });
 
 type Props = InitialLocaleStateProps;

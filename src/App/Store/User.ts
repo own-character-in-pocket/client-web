@@ -2,9 +2,13 @@ import { createDuck } from "utils/store";
 
 export type Avatar = string;
 
-const createInitialState = () => ({
-  avatar: null as null | Avatar
-});
+type State = {
+  avatar: null | Avatar;
+};
+
+const createInitialState = (): State => {
+  throw new Error("Unreachable");
+};
 
 export const UserActions = createDuck({
   namespace: "User",

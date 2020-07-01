@@ -6,13 +6,13 @@ const reducers = { Card };
 
 const reducer = combineReducers(reducers);
 
-export type CardListPageStore = {
+export type CardInformationPageStore = {
   [key in keyof typeof reducers]: typeof reducers[key] extends Reducer<infer S, any> ? S : never;
 };
 
 export const {
-  StoreProvider: CardListStoreProvider,
-  useStore: useCardListStore,
-  useSelector: useCardListSelector,
-  useDispatch: useCardListDispatch
+  StoreProvider: CardInformationStoreProvider,
+  useStore: useCardInformationStore,
+  useSelector: useCardInformationSelector,
+  useDispatch: useCardInformationDispatch
 } = createStore(reducer);

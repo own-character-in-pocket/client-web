@@ -5,7 +5,7 @@ import React from "react";
 import styled from "styled-components";
 import { lazyComponent } from "utils/lazy-component";
 import { loadCardList } from "./services/loadCardList";
-import { CardListStoreProvider, useCardListSelector } from "./Store";
+import { CardListPageStore, CardListStoreProvider, useCardListSelector } from "./Store";
 
 const Layout = styled.div`
   display: grid;
@@ -34,7 +34,7 @@ export const CardList = lazyComponent({
       return () => <Loading.Error error={cardList.error} />;
     }
 
-    const args = { Card: { itemList: cardList.item } };
+    const args: CardListPageStore = { Card: { itemList: cardList.item } };
 
     return () => (
       <CardListStoreProvider args={args}>

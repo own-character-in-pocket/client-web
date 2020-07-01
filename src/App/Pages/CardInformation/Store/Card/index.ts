@@ -1,20 +1,20 @@
 import { createDuck } from "utils/store";
-import { Card } from "../../services/loadCardList";
+import { Card } from "../../services/loadCard";
 
 type State = {
-  itemList: Card[];
+  item: Card;
 };
 
 const createInitialState = (): State => {
-  throw new Error("Unreachable");
+  throw new Error("Unreachable!");
 };
 
 export const CardActions = createDuck({
   namespace: "Card",
   createInitialState,
   reducers: {
-    set(state, cardList: Card[]) {
-      state.itemList = cardList;
+    set(state, card: Card) {
+      state.item = card;
     }
   }
 });

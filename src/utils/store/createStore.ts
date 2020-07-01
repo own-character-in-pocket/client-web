@@ -31,9 +31,9 @@ export const createStore = <S, A extends Action | ActionList>(reducer: Reducer<S
     return useMemo(createMemo, dependencies);
   };
 
-  type Props = Readonly<{ children: ReactNode; createInitialStore?: (args?: any) => Record<string, any>; args?: any }>;
-  const StoreProvider = ({ children, createInitialStore = (args = {}) => args, args }: Props) => {
-    const initializer = () => reducer((createInitialStore(args) as unknown) as S, ({ type: Symbol("initialization") } as unknown) as A);
+  type Props = Readonly<{ children: ReactNode; createInitialStore?: (args?: any) => S; args: any }>;
+  const StoreProvider = ({ children, createInitialStore = args => args, args }: Props) => {
+    const initializer = () => createInitialStore(args);
     const context = useReducer(reducer, null, initializer);
 
     return createElement(Context.Provider, { value: context }, children);
