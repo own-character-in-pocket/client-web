@@ -1,9 +1,8 @@
-import { Loading } from "App/Atomics/Loading";
 import { ThumbnailCard } from "App/Molecules/ThumbnailCard";
 import { cardInformationPath } from "constants/Routes";
 import React from "react";
 import styled from "styled-components";
-import { lazyComponent } from "utils/lazy-component";
+import { loadable } from "utils/loadable";
 import { loadCardList } from "./services/loadCardList";
 import { CardListPageStore, CardListStoreProvider, useCardListSelector } from "./Store";
 
@@ -27,11 +26,11 @@ const Loaded = () => {
   );
 };
 
-export const CardList = lazyComponent({
+export const CardList = loadable({
   async load() {
     const cardList = await loadCardList();
     if (cardList.isErr) {
-      return () => <Loading.Error error={cardList.error} />;
+      throw cardList.error;
     }
 
     const args: CardListPageStore = { Card: { itemList: cardList.item } };

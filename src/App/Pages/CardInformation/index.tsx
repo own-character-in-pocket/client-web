@@ -1,9 +1,8 @@
-import { Loading } from "App/Atomics/Loading";
 import { cardInformationPath } from "constants/Routes";
 import { Size } from "constants/Size";
 import React from "react";
 import styled from "styled-components";
-import { lazyComponent } from "utils/lazy-component";
+import { loadable } from "utils/loadable";
 import { FieldGroupList } from "./FieldGroupList";
 import { Information } from "./Information";
 import { Relationships } from "./Relationships";
@@ -26,12 +25,12 @@ const Loaded = () => {
   );
 };
 
-export const CardInformation = lazyComponent({
+export const CardInformation = loadable({
   async load() {
     const match = cardInformationPath.parse(window.location.pathname);
     const card = await loadCard(match.params.id);
     if (card.isErr) {
-      return () => <Loading.Error error={card.error} />;
+      throw card.error;
     }
 
     const { item } = card;

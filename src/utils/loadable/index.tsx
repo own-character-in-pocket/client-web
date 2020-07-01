@@ -1,5 +1,6 @@
-import { Loading } from "App/Atomics/Loading";
 import React, { FC, lazy, Suspense } from "react";
+import { Loading } from "./Loading";
+import { LoadingError } from "./LoadingError";
 
 type LoadingErrorProps = {
   error: any;
@@ -11,13 +12,13 @@ type Props = {
   load: () => Promise<FC>;
 };
 
-export function lazyComponent({ loading: LoadingComponent = Loading, loadingError: LoadingError = Loading.Error, load }: Props) {
+export function loadable({ loading: LoadingComponent = Loading, loadingError: LoadingErrorComponent = LoadingError, load }: Props) {
   const factory = async () => {
     try {
       const Load = await load();
       return { default: () => <Load /> };
     } catch (error) {
-      return { default: () => <LoadingError error={error} /> };
+      return { default: () => <LoadingErrorComponent error={error} /> };
     }
   };
   const Lazy = lazy(factory);
