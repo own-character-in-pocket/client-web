@@ -1,28 +1,14 @@
-import { negotiateLanguages } from "@fluent/langneg";
 import { Localization } from "App/Store/Locale/Localization";
 import { immerable } from "immer";
 import { createDuck } from "utils/store";
 
-const load = (url: string) => fetch([url, Date.now()].join("?")).then(response => response.json());
+type State = LocaleState;
 
-export const loadLocale = (language: string) =>
-  load(`/_locales/${language}/message.json`).then(locales => ({ code: language, locales: Localization.of(locales) }));
-
-export const loadLocaleInformation = async () => {
-  const { fallbackLanguage, supportLanguageList } = await load("/_locales/index.json");
-  const browserLanguage = window.navigator.language;
-  const currentLanguage = negotiateLanguages([browserLanguage], supportLanguageList)[0] ?? fallbackLanguage;
-  const locales = await Promise.all(
-    [currentLanguage, currentLanguage !== fallbackLanguage && fallbackLanguage].filter(Boolean).map(loadLocale)
-  );
-  return { currentLanguage, fallbackLanguage, supportLanguageList, locales };
-};
-
-export type InitialLocaleStateProps = {
-  currentLanguage: string;
-  fallbackLanguage: string;
-  supportLanguageList: string[];
-  locales: Array<{ code: string; locales: Localization }>;
+type InitialLocaleStateProps = {
+  currentLanguage?: string;
+  fallbackLanguage?: string;
+  supportLanguageList?: string[];
+  locales?: Array<{ code: string; locales: Localization }>;
 };
 
 export class LocaleState {
@@ -65,7 +51,9 @@ export class LocaleState {
   }
 }
 
-export const createInitialState = LocaleState.of;
+const createInitialState = (): State => {
+  throw new Error("Unreachable");
+};
 
 export const LocaleActions = createDuck({
   namespace: "Locale",

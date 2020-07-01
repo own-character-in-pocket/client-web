@@ -1,23 +1,25 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
+import { loadLocaleInformation } from "services/localeLocaleInformation";
+import { Result } from "utils/functionals";
+import { lazyComponent } from "utils/lazy-component";
 import { Routes } from "./Routes";
 import { AppStore, AppStoreProvider } from "./Store";
-import { createInitialState, InitialLocaleStateProps } from "./Store/Locale";
+import { LocaleState } from "./Store/Locale";
 import "./styles";
 
-const createInitialStore = ({ currentLanguage, fallbackLanguage, supportLanguageList, locales }: Props): AppStore => ({
-  Locale: createInitialState({ currentLanguage, fallbackLanguage, supportLanguageList, locales }),
-  User: {
-    avatar: null
+export const App = lazyComponent({
+  async load() {
+    const locale = await loadLocaleInformation();
+    const localeState = LocaleState.of(locale.unwrapOr({} as typeof locale extends Result<infer T, any> ? T : never));
+    const args: AppStore = { Locale: localeState, User: { avatar: null } };
+
+    return () => (
+      <BrowserRouter>
+        <AppStoreProvider args={args}>
+          <Routes />
+        </AppStoreProvider>
+      </BrowserRouter>
+    );
   }
 });
-
-type Props = InitialLocaleStateProps;
-
-export const App = (props: Props) => (
-  <BrowserRouter>
-    <AppStoreProvider createInitialStore={createInitialStore} args={props}>
-      <Routes />
-    </AppStoreProvider>
-  </BrowserRouter>
-);

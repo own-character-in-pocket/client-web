@@ -1,6 +1,7 @@
 import { Reducer } from "react";
+import { loadLocale } from "services/loadLocale";
 import { combineReducers, createStore } from "utils/store";
-import { LocaleActions as Locale, loadLocale } from "./Locale";
+import { LocaleActions as Locale } from "./Locale";
 import { UserActions as User } from "./User";
 
 const reducers = { Locale, User };
